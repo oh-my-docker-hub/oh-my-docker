@@ -6,14 +6,16 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 # ADD conf/sources.list    /etc/apt/sources.list
 # 安装modules
 RUN apt-get update && apt-get install -y \
-        #libxml2-dev \
+        libxml2-dev \
         libfreetype6-dev \
         libmemcached-dev \
         libmcrypt-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
         unzip \
-        && docker-php-ext-install -j$(nproc) iconv mcrypt \
+        && pecl install mcrypt-1.0.1 \
+        && docker-php-ext-enable mcrypt \
+        && docker-php-ext-install -j$(nproc) iconv \
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
         && docker-php-ext-install -j$(nproc) gd \
         && docker-php-ext-install mysqli \
