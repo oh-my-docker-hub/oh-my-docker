@@ -12,9 +12,11 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
-        unzip \
-        && pecl install mcrypt-1.0.1 \
-        && docker-php-ext-enable mcrypt \
+        unzip;
+RUN \
+        # pecl install mcrypt-1.0.1 \
+        # && docker-php-ext-enable mcrypt \
+        docker-php-ext-install openssl \
         && docker-php-ext-install -j$(nproc) iconv \
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
         && docker-php-ext-install -j$(nproc) gd \
