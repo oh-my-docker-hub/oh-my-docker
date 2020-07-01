@@ -1,0 +1,11 @@
+version: "3"
+services: 
+  oh.my.docker.php7:
+    image: omydockerhub/php7
+    container_name: php7
+    volumes: 
+      - /data1:data1
+      - ./conf/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    restart: always
+    ports: 
+      - 9090:9090
