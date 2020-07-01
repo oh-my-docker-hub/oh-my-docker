@@ -3,7 +3,7 @@ FROM php:7.3.19-fpm
 RUN usermod -u 1000 www-data
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-ADD conf/sources.list    /etc/apt/sources.list
+# ADD conf/sources.list    /etc/apt/sources.list
 # 安装modules
 RUN apt-get update && apt-get install -y \
         #libxml2-dev \
