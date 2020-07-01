@@ -8,7 +8,7 @@ fi
 mkdir -p build/$PROJECT_NAME/conf
 touch build/$PROJECT_NAME/README.$PROJECT_NAME.md;
 touch build/$PROJECT_NAME/Dockerfile;
-touch build/$PROJECT_NAME/DockerCompose.yaml
+touch build/$PROJECT_NAME/docker-compose.yaml
 
 echo "PROJECT: $PROJECT_NAME"
 echo "PATH: build/$PROJECT_NAME"
