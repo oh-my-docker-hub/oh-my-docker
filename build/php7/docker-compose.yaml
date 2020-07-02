@@ -4,11 +4,13 @@ services:
     image: omydockerhub/php7
     container_name: ohmydocker.php7
     volumes: 
-      - /data1:data1
+      - /data1:/data1
       - ./conf/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     restart: always
     ports: 
       - 9090:9090
+    links:  # set all link server
+      - oh.my.docker.mysql:mysql
   openresty:
     image: openresty/openresty
     container_name: ohmydocker.openresty
@@ -20,3 +22,20 @@ services:
       - 443:443
     links:  # set all link server
       - oh.my.docker.php7:php
+  oh.my.docker.mysql:
+    image: mysql
+    container_name: ohmydocker.mysql.23306
+    ports:
+    - 23306:3306
+    command: 
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    environment:
+    - TZ=Asia/Shanghai
+    - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+    - /data/mysql/mysql.8/:/var/lib/mysql
+    - ./conf/mysql.conf:/etc/mysql/my.cnf
