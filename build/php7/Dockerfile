@@ -16,29 +16,20 @@ ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
-#ADD conf/php.ini    /usr/local/etc/php/php.ini
-#ADD conf/php-fpm.conf    /usr/local/etc/php-fpm.conf
 
 
 # 安装 Xdebug
 ENV XDEBUG_REMOTE_HOST=192.168.99.110
-# RUN curl -fsSL 'https://xdebug.org/files/xdebug-2.4.0.tgz' -o xdebug.tar.gz \
-#     && mkdir -p xdebug \
-#     && tar -xf xdebug.tar.gz -C xdebug --strip-components=1 \
-#     && rm xdebug.tar.gz \
-#     && ( \
-#     cd xdebug \
-#     && phpize \
-#     && ./configure --enable-xdebug \
-#     && make -j$(nproc) \
-#     && make install \
-#     ) \
-#     && rm -r xdebug \
-#     && docker-php-ext-enable xdebug
 #配置 debugger
 RUN echo "xdebug.enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     echo "xdebug.remote_host=${XDEBUG_REMOTE_HOST}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+RUN apt-get clean \ 
+    && rm -rf /var/lib/apt/lists/* 
+
+#ADD conf/php.ini    /usr/local/etc/php/php.ini
+#ADD conf/php-fpm.conf    /usr/local/etc/php-fpm.conf
 
 WORKDIR /data1
 
