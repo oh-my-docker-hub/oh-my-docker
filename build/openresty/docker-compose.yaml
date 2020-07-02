@@ -1,0 +1,25 @@
+version: "3.7"
+services: 
+  openresty:
+    image: openresty/openresty
+    container_name: ohmydocker.openresty
+    volumes: 
+      - ./conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./conf/conf.d/:/usr/local/openresty/nginx/conf.d/
+      - /data1/logs/nginx:/usr/local/openresty/nginx/logs
+      # - /data1/logs/nginx:/data1/logs
+      - /data1:/data1
+    restart: always
+    ports: 
+      - 80:80
+      - 443:443
+    external_links:  # set all link server
+      - oh.my.docker.php7:php
+    # links:  # set all link server
+    #   - oh.my.docker.php7:php
+    networks:
+      - current_network
+networks:
+  current_network: # docker network create ohmydocker.networks.default
+    external: true
+    name: ohmydocker.networks.default
