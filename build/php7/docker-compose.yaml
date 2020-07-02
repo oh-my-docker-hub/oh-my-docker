@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 services: 
   oh.my.docker.php7:
     image: omydockerhub/php7
@@ -6,22 +6,28 @@ services:
     volumes: 
       - /data1:/data1
       - ./conf/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    environment: 
+      - XDEBUG_REMOTE_HOST=192.168.0.105
     restart: always
     ports: 
-      - 9090:9090
+      - 9090:9000
+      # - 19900:19900
     links:  # set all link server
       - oh.my.docker.mysql:mysql
-  openresty:
-    image: openresty/openresty
-    container_name: ohmydocker.openresty
-    volumes: 
-      - ./conf/nginx.conf.d/:/etc/nginx/conf.d
-    restart: always
-    ports: 
-      - 80:80
-      - 443:443
-    links:  # set all link server
-      - oh.my.docker.php7:php
+    networks:
+      - current_network
+  # openresty:
+  #   image: openresty/openresty
+  #   container_name: ohmydocker.openresty
+  #   volumes: 
+  #     - ./conf/nginx.conf:/etc/nginx/conf/nginx.conf
+  #     - ./conf/nginx.conf.d/:/usr/local/openresty/nginx/conf.d/
+  #   restart: always
+  #   ports: 
+  #     - 80:80
+  #     - 443:443
+  #   links:  # set all link server
+  #     - oh.my.docker.php7:php
   oh.my.docker.mysql:
     image: mysql
     container_name: ohmydocker.mysql.23306
@@ -37,5 +43,22 @@ services:
     - TZ=Asia/Shanghai
     - MYSQL_ROOT_PASSWORD=123456
     volumes:
-    - /data/mysql/mysql.8/:/var/lib/mysql
+    - volumes.mysql8.data:/var/lib/mysql  # /data/mysql/mysql.8
     - ./conf/mysql.conf:/etc/mysql/my.cnf
+    networks:
+      - current_network
+networks:
+  current_network: # docker network create ohmydocker.networks.default
+    external: true
+    name: ohmydocker.networks.default
+volumes: 
+  volumes.mysql8.data: 
+    driver: local
+    driver_opts: 
+      o: bind
+      type: none
+      device: /data/mysql/mysql.8
+  ## OR:
+  #volumes.mysql8.data: 
+  #  external:
+  #     name: volumes.mysql8.data # docker volume create --name volumes.mysql8.data --opt type=none --opt device=/data/mysql/mysql.8 --opt o=bind

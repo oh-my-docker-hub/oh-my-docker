@@ -13,17 +13,9 @@ ENV COMPOSER_HOME /root/composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 
+# 安装 Xdebug
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
-
-
-
-# 安装 Xdebug
-ENV XDEBUG_REMOTE_HOST=192.168.99.110
-#配置 debugger
-RUN echo "xdebug.enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    echo "xdebug.remote_host=${XDEBUG_REMOTE_HOST}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN apt-get clean \ 
     && rm -rf /var/lib/apt/lists/* 
@@ -33,5 +25,5 @@ RUN apt-get clean \
 
 WORKDIR /data1
 
-EXPOSE 9000
+EXPOSE 9000 19900
 VOLUME ["/data1"]
