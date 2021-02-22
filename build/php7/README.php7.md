@@ -9,6 +9,8 @@
 ![docker image size](https://img.shields.io/docker/image-size/omydockerhub/php7/latest.svg)
 
 
+# 由于新打包进来的 swoole 和 hyperf 这两个扩展 , 跟xdebug冲突 , 所以默认关闭了xdebug , 如果需要的打开的,请自行修改xdebug.ini和php.ini
+
 # 如何Debug容器里面运行的php服务 
 ## 配置好xdebug
 ```ini

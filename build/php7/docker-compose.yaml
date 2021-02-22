@@ -1,11 +1,15 @@
 version: "3.5"
 services: 
   oh.my.docker.php7:
-    image: omydockerhub/php7
+    # image: omydockerhub/php7
+    build: .
     container_name: ohmydocker.php7
     volumes: 
+      - ./.composer:/root/.composer
       - /data1:/data1
+      - ~/.ssh:/root/.ssh
       - ./conf/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./conf/php.ini:/usr/local/etc/php/php.ini
     environment: 
       - XDEBUG_REMOTE_HOST=192.168.0.105
     restart: always
@@ -16,6 +20,8 @@ services:
       - oh.my.docker.mysql:mysql
     networks:
       - current_network
+    # command:
+    #   ["php","./bin/hyperf.php", "start"]
   # openresty:
   #   image: openresty/openresty
   #   container_name: ohmydocker.openresty
@@ -29,7 +35,7 @@ services:
   #   links:  # set all link server
   #     - oh.my.docker.php7:php
   oh.my.docker.mysql:
-    image: mysql
+    image: mysql:8.0.20
     container_name: ohmydocker.mysql.23306
     ports:
     - 23306:3306
@@ -43,7 +49,8 @@ services:
     - TZ=Asia/Shanghai
     - MYSQL_ROOT_PASSWORD=123456
     volumes:
-    - volumes.mysql8.data:/var/lib/mysql  # /data/mysql/mysql.8
+    - volumes.mysql8.data:/var/lib/mysql  # /data/mysql/mysql.8/data
+    - volumes.mysql8.files:/var/lib/mysql-files  # /data/mysql/mysql.8/mysql-files
     - ./conf/mysql.conf:/etc/mysql/my.cnf
     networks:
       - current_network
@@ -57,7 +64,13 @@ volumes:
     driver_opts: 
       o: bind
       type: none
-      device: /data/mysql/mysql.8
+      device: /data/mysql/mysql.8/data
+  volumes.mysql8.files: 
+    driver: local
+    driver_opts: 
+      o: bind
+      type: none
+      device: /data/mysql/mysql.8/mysql-files
   ## OR:
   #volumes.mysql8.data: 
   #  external:
