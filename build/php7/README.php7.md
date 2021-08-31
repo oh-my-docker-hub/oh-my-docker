@@ -68,4 +68,4 @@ xdebug.remote_log=/data1/logs/xdebug/remote.log ;xdebug的日志输出地址，�
 3. 此时就可以看到效果 (最好设置个断点 , 比较方便看到效果)
 
 
-![](static/images/2020-07-03-02-24-11.png)
+![](https://raw.githubusercontent.com/oh-my-docker-hub/oh-my-docker/master/build/php7/static/images/2020-07-03-02-24-11.png)
