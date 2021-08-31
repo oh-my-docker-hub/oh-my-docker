@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   robotframework.ride:
-    image: softsam/robotframework-ride
+    image: mmfei/robotframework-ride
     volumes:
       - /data1:/data1
       - volumes.robotframework.data:/robot
